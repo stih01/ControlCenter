@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 viewModel.sendCommand("TAKE_PHOTO_" + id);
             });
 
-            // Подписка на состояние доступности
+            // Подписка на состояние доступности.
             viewModel.getIsButtonEnabled().observe(this, isEnabled -> {
                 btn.setEnabled(isEnabled);
                 // Дополнительно меняем прозрачность, чтобы кнопка выглядела "приглушенной"
