@@ -124,9 +124,9 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getImageLoadProgress().observe(this, progress -> progressBarImage.setProgress(progress));
 
         viewModel.getImageSizeText().observe(this, sizeText -> {
-            if (sizeText != null && !sizeText.isEmpty() && viewModel.getNewImageBitmap().getValue() != null) {
+            if (sizeText != null && !sizeText.isEmpty()) {
                 imageSizeTextView.setText(sizeText);
-                imageSizeTextView.setVisibility(View.VISIBLE);
+                imageSizeTextView.setVisibility(View.VISIBLE); // Показываем полоску, если есть текст
             } else {
                 imageSizeTextView.setVisibility(View.GONE);
             }

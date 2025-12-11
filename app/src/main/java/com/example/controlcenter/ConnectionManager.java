@@ -78,10 +78,32 @@ public class ConnectionManager implements TcpClient.OnMessageReceived {
 
     @Override
     public void connectionEstablished() {
-        listener.onConnectionStatusChanged("Установлено");
-        heartbeatHandler.post(heartbeatRunnable);
+        Log.d(TAG, "Шаг 1: Сокет открыт.");
+
+        // 1. Убираем крутилку в UI
+        reconnectHandler.post(() -> {
+            listener.onConnectionStatusChanged("Установлено");
+        });
+
         reconnectHandler.removeCallbacks(reconnectRunnable);
+
+        // 2. Отправляем ID (через 200мс)
+        reconnectHandler.postDelayed(() -> {
+            Log.d(TAG, "Шаг 2: Отправка ID:CONTROL");
+            backgroundExecutor.execute(() -> {
+                if (tcpClient != null) {
+                    tcpClient.sendMessage("ID:CONTROL");
+                }
+            });
+        }, 200);
+
+        // 3. Запрашиваем список камер (только ОДИН раз через 1200мс)
+        reconnectHandler.postDelayed(() -> {
+            Log.d(TAG, "Шаг 3: Запуск Heartbeat и ОДИНАРНЫЙ запрос камер");
+            heartbeatHandler.post(heartbeatRunnable);
+        }, 1200);
     }
+
 
     @Override public void peerDisconnected() {
         listener.onPeerDisconnected();

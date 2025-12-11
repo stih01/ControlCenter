@@ -182,6 +182,11 @@ public class CommunicationViewModel extends ViewModel
         isProgressIndeterminate.postValue(false);
         imageSizeText.postValue(sizeText);
     }
+    public void resetImage() {
+        newImageBitmap.postValue(null);
+        imageSizeText.postValue("");
+        imageLoadProgress.postValue(0);
+    }
     public void onImageProcessingComplete() {
         isLoading.postValue(false);
         isButtonEnabled.postValue(true);
@@ -190,10 +195,4 @@ public class CommunicationViewModel extends ViewModel
         statusMessages.postValue(message);
         onImageProcessingComplete();
     }
-    public void resetImage() {
-        newImageBitmap.postValue(null);
-        imageSizeText.postValue("");
-        imageLoadProgress.postValue(0);
-    }
-
 }
